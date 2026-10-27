@@ -109,7 +109,7 @@ Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur tho
 | Bot join hote hi disconnect | `server.properties` me `online-mode=false` hai na? Aur tumhara game bhi 1.21.6 hai? |
 | "Outdated server/client" error | Server (Paper), tumhara Minecraft aur bots — teeno ka version **1.21.6** rakho |
 | Gemini `429` / quota error | Free tier ki limit — agents 5 se kam karke 2–3 rakho, ya profile me `cooldown` badhao |
-| `npm install` fail (canvas/native) | Node **20 LTS** use karo (24 nahi). Phir bhi fail ho to Visual Studio Build Tools (Desktop development with C++) install karke retry |
+| `npm install` fail — `gl` package, 'No prebuilt binaries' / 'Could not find any Visual Studio' | **Node version galat hai.** Node 24/26 ke liye `gl` ke prebuilt binaries nahi hain, isliye wo compile karne ki koshish karta hai aur Visual Studio maangta hai. Fix: **Node 20 LTS** install karo (nvm-windows se `nvm install 20` + `nvm use 20`, ya nodejs.org se 20 LTS installer), phir `node_modules` aur `package-lock.json` delete karke `npm install` dobara chalao. Visual Studio wala raasta mat lo — heavy hai aur Node 26 par phir bhi risky hai |
 | Agents kuch kar hi nahi rahe | MindServer UI (localhost:8080) me error dekho; aksar wajah galat API key hoti hai |
 | Duniya reset karni hai | Server band karke `mc-server` ka `world` folder delete kar do; society ki memory reset karni ho to repo ka `bots/` folder delete karo |
 
