@@ -111,6 +111,7 @@ Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur tho
 | Gemini `429` / quota error | Free tier ki limit — agents 5 se kam karke 2–3 rakho, ya profile me `cooldown` badhao |
 | `npm install` fail — `gl` package, 'No prebuilt binaries' / 'Could not find any Visual Studio' | **Node version galat hai.** Node 24/26 ke liye `gl` ke prebuilt binaries nahi hain, isliye wo compile karne ki koshish karta hai aur Visual Studio maangta hai. Fix: **Node 20 LTS** install karo (nvm-windows se `nvm install 20` + `nvm use 20`, ya nodejs.org se 20 LTS installer), phir `node_modules` aur `package-lock.json` delete karke `npm install` dobara chalao. Visual Studio wala raasta mat lo — heavy hai aur Node 26 par phir bhi risky hai |
 | Agents kuch kar hi nahi rahe | MindServer UI (localhost:8080) me error dekho; aksar wajah galat API key hoti hai |
+| `patch-package` ERROR — mineflayer patch fail | Versions drift ho gaye the. Repo me ab versions pin + `package-lock.json` committed hai — `git pull` karo, phir `rm -rf node_modules package-lock.json && npm install` (lockfile pull ke baad wapas aa jayegi, use delete karke hi install karna taaki fresh resolve na ho — actually lockfile hi sahi versions layegi, bas `rm -rf node_modules` karke `npm install` kaafi hai) |
 | Duniya reset karni hai | Server band karke `mc-server` ka `world` folder delete kar do; society ki memory reset karni ho to repo ka `bots/` folder delete karo |
 
 ## Safety notes
