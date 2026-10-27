@@ -7,7 +7,7 @@ Built on the successful open-source project **[Mindcraft](https://github.com/kol
 - 🎭 **5 founder profiles** with distinct personalities & village roles — `profiles/society/`
 - 🌅 **A shared founding mission** seeded at spawn (`init_message` in `settings.js`)
 - 🧠 **Persistent memory** (`load_memory: true`) — the society continues where it left off
-- ⚔️ **Survival base profile**, Gemini 2.5 Flash as the default brain (free tier), Ollama local models supported
+- ⚔️ **Survival base profile**, Gemini 3.8 Flash as the default brain (free tier), Ollama local models supported
 - 👀 **Spectator-first setup** — local Paper server, offline auth, watch live at `localhost:8080` too
 
 **👉 Full Windows setup, step by step: [SETUP-GUIDE.md](SETUP-GUIDE.md)**

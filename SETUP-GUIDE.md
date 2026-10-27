@@ -93,7 +93,7 @@ node main.js
 Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur thoda kam smart):
 
 1. Ollama me ek model pull karo, jaise `ollama pull qwen2.5:7b`
-2. Agent profile me `"model": "gemini-2.5-flash"` ki jagah ye lagao:
+2. Agent profile me `"model": "gemini-3.8-flash"` ki jagah ye lagao:
    ```json
    "model": { "api": "ollama", "model": "qwen2.5:7b", "url": "http://127.0.0.1:11434" }
    ```
