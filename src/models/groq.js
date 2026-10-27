@@ -32,6 +32,15 @@ export class GroqCloudAPI {
         // Construct messages array
         let messages = [{"role": "system", "content": systemMessage}].concat(turns);
 
+        // Qwen chat templates on Groq (minijinja) hard-require at least one
+        // user turn and 400 with "No user query found in messages" otherwise.
+        // At startup the only turn can be the system init message, so mirror
+        // the latest non-user turn as a user message the model can act on.
+        if (!messages.some(m => m.role === 'user')) {
+            const lastTurn = [...turns].reverse().find(m => typeof m.content === 'string' && m.content.trim());
+            messages.push({ "role": "user", "content": lastTurn ? lastTurn.content : "Begin." });
+        }
+
         let res = null;
 
         try {
