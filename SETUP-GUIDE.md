@@ -13,7 +13,7 @@ Ye project successful open-source project **[Mindcraft](https://github.com/kolby
 | **Minecraft Java Edition** | PC version. **1.21.6 recommended** (server aur tumhara game — dono same version) |
 | **Java 21** | Paper server chalane ke liye (Adoptium / Oracle JDK 21) |
 | **Node.js 20 LTS** | ⚠️ Node 24 mat use karna — native dependencies (`canvas`) fail ho sakti hain. Node 20 LTS sabse safe hai |
-| **Gemini API Key (free)** | Google AI Studio se free key milti hai. Yehi agents ka "dimaag" hai |
+| **Groq API Key (free)** | console.groq.com se free key milti hai — koi card nahi chahiye. Yehi agents ka "dimaag" hai (Llama 3.1 8B Instant: 30 requests/minute free, sabse fast) |
 
 > 🔑 **API key sirf `keys.json` file me dalegi — kabhi chat me mat bhejna.**
 
@@ -44,15 +44,17 @@ npm install
 
 `npm install` me 2–5 minute lag sakte hain (Mineflayer + dependencies). Agar `canvas` par error aaye to Node 20 LTS confirm karo.
 
-## Step 3 — Gemini API key lagao
+## Step 3 — Groq API key lagao
 
 Repo me `keys.json` file kholo aur sirf ye line bharo:
 
 ```json
-"GEMINI_API_KEY": "apni-key-yahan",
+"GROQCLOUD_API_KEY": "apni-key-yahan",
 ```
 
-Baaki keys khaali chhod do. (Free key: Google AI Studio → "Get API key".)
+Baaki keys khaali chhod do. (Free key: console.groq.com → API Keys → Create. Key `gsk_` se shuru hoti hai.)
+
+> ℹ️ **Gemini kyun nahi?** Gemini free tier par 3.8 Flash ki limit sirf **5 requests/minute aur 20 requests/DAY** hai — 5 agents ki society ke liye kuch hi minute me khatam. Groq free tier **30 requests/minute** deta hai aur response bhi sabse fast (sub-second) hai, isliye default Groq rakha hai. Chaaho to profile me model badal ke Gemini/Ollama bhi laga sakte ho (neeche Ollama wala section dekho).
 
 ## Step 4 — Agents ko duniya me bhejo 🚀
 
@@ -108,7 +110,7 @@ Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur tho
 | Bots connect hi nahi ho rahe / `ECONNREFUSED` | Paper server chal raha hai? Pehle server, phir `node main.js` — yehi order |
 | Bot join hote hi disconnect | `server.properties` me `online-mode=false` hai na? Aur tumhara game bhi 1.21.6 hai? |
 | "Outdated server/client" error | Server (Paper), tumhara Minecraft aur bots — teeno ka version **1.21.6** rakho |
-| Gemini `429` / quota error | Free tier ki limit — agents 5 se kam karke 2–3 rakho, ya profile me `cooldown` badhao |
+| `429` / quota error | Free tier ki minute-limit takra gayi hai — thodi der ruk ke chalao; agents 5 se kam (2–3) karne ya profile me `cooldown` badhane se aur smooth chalega. Gemini par ye error turant aata hai (5/min, 20/day) — isiliye default Groq hai |
 | `npm install` fail — `gl` package, 'No prebuilt binaries' / 'Could not find any Visual Studio' | **Node version galat hai.** Node 24/26 ke liye `gl` ke prebuilt binaries nahi hain, isliye wo compile karne ki koshish karta hai aur Visual Studio maangta hai. Fix: **Node 20 LTS** install karo (nvm-windows se `nvm install 20` + `nvm use 20`, ya nodejs.org se 20 LTS installer), phir `node_modules` aur `package-lock.json` delete karke `npm install` dobara chalao. Visual Studio wala raasta mat lo — heavy hai aur Node 26 par phir bhi risky hai |
 | Agents kuch kar hi nahi rahe | MindServer UI (localhost:8080) me error dekho; aksar wajah galat API key hoti hai |
 | `patch-package` ERROR — mineflayer patch fail | Versions drift ka issue tha — repo me ab versions pin kiye hue hain aur `package-lock.json` committed hai. Fix: `git pull`, phir `rm -rf node_modules` karke `npm install` (lockfile ko mat delete karna — wahi exact versions laati hai). Saare 6 patches ✔ lagne chahiye |
