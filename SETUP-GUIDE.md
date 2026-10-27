@@ -13,7 +13,7 @@ Ye project successful open-source project **[Mindcraft](https://github.com/kolby
 | **Minecraft Java Edition** | PC version. **1.21.6 recommended** (server aur tumhara game — dono same version) |
 | **Java 21** | Paper server chalane ke liye (Adoptium / Oracle JDK 21) |
 | **Node.js 20 LTS** | ⚠️ Node 24 mat use karna — native dependencies (`canvas`) fail ho sakti hain. Node 20 LTS sabse safe hai |
-| **Groq API Key (free)** | console.groq.com se free key milti hai — koi card nahi chahiye. Yehi agents ka "dimaag" hai (Llama 3.1 8B Instant: 30 requests/minute free, sabse fast) |
+| **Ollama (local, free)** | Agents ka dimaag tumhare apne PC par chalega — **koi API key nahi, koi limit nahi**. Model: Qwen 2.5 3B (RTX 3050 4GB ke liye best fit) |
 
 > 🔑 **API key sirf `keys.json` file me dalegi — kabhi chat me mat bhejna.**
 
@@ -44,17 +44,21 @@ npm install
 
 `npm install` me 2–5 minute lag sakte hain (Mineflayer + dependencies). Agar `canvas` par error aaye to Node 20 LTS confirm karo.
 
-## Step 3 — Groq API key lagao
+## Step 3 — Local dimaag: Ollama setup karo 🧠
 
-Repo me `keys.json` file kholo aur sirf ye line bharo:
+Default brain **tumhare PC par locally** chalta hai — koi key nahi, koi quota nahi, kabhi 429 nahi. (Cloud free tiers isiliye chhode: Gemini free = sirf 20 requests/day, Groq ke bhi daily token caps society kuch ghante me kha jaati hai.)
 
-```json
-"GROQCLOUD_API_KEY": "apni-key-yahan",
+WSL terminal me (usi PC par jahan bots chal rahe hain):
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull qwen2.5:3b
 ```
 
-Baaki keys khaali chhod do. (Free key: console.groq.com → API Keys → Create. Key `gsk_` se shuru hoti hai.)
-
-> ℹ️ **Gemini kyun nahi?** Gemini free tier par 3.8 Flash ki limit sirf **5 requests/minute aur 20 requests/DAY** hai — 5 agents ki society ke liye kuch hi minute me khatam. Groq free tier **30 requests/minute** deta hai aur response bhi sabse fast (sub-second) hai, isliye default Groq rakha hai. Chaaho to profile me model badal ke Gemini/Ollama bhi laga sakte ho (neeche Ollama wala section dekho).
+- `qwen2.5:3b` sirf ~2 GB hai — RTX 3050 (4 GB) par pura GPU me fit ho jata hai, isliye fast hai. 7B model VRAM se bada padta aur slow ho jata; 1.5B commands me galtiyan karta hai. 3B is kaam ka sweet spot hai.
+- GPU use ho raha hai ya nahi, check: `nvidia-smi` (WSL me bhi dikhna chahiye).
+- `node main.js` chalane se pehle ek alag terminal me `ollama serve` chalu rakho (agar pehle se chal raha ho to "address already in use" aayega — wo theek hai, matlab server already up hai).
+- `keys.json` ki ab koi zaroorat nahi — khaali reh sakta hai.
 
 ## Step 4 — Agents ko duniya me bhejo 🚀
 
@@ -90,16 +94,9 @@ node main.js
 - Pehle din API slow lage to 2–3 agents se start karo: `settings.js` ki `profiles` list me baaki profiles ke aage `//` laga do.
 - Naya agent = `profiles/society/` me ek aur JSON (kisi existing ko copy karke naam/personality badal do) + `settings.js` me uski line add.
 
-## Bilkul free option — Local Ollama (bina API key)
+## Cloud option (agar kabhi chahiye)
 
-Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur thoda kam smart):
-
-1. Ollama me ek model pull karo, jaise `ollama pull qwen2.5:7b`
-2. Agent profile me `"model": "gemini-3.8-flash"` ki jagah ye lagao:
-   ```json
-   "model": { "api": "ollama", "model": "qwen2.5:7b", "url": "http://127.0.0.1:11434" }
-   ```
-   Aur `"embedding"` wali line hata do (local mode me simple fallback chalega).
+Local default hai, par profile ki `"model"` line badal kar cloud bhi laga sakte ho — jaise Groq ka Qwen 3.8 27B: `"model": { "api": "groq", "model": "qwen/qwen3.8-27b" }` aur `keys.json` me `GROQCLOUD_API_KEY` (free key: console.groq.com). Dhyan rahe: cloud free tiers par daily limit lagti hai — society lambe sessions me wo kha jaati hai, isiliye local hi recommended hai.
 
 ---
 
@@ -110,9 +107,9 @@ Agar Gemini ki jagah apne PC ka local model use karna ho (free, par slow aur tho
 | Bots connect hi nahi ho rahe / `ECONNREFUSED` | Paper server chal raha hai? Pehle server, phir `node main.js` — yehi order |
 | Bot join hote hi disconnect | `server.properties` me `online-mode=false` hai na? Aur tumhara game bhi 1.21.6 hai? |
 | "Outdated server/client" error | Server (Paper), tumhara Minecraft aur bots — teeno ka version **1.21.6** rakho |
-| `429` / quota error | Free tier ki minute-limit takra gayi hai — thodi der ruk ke chalao; agents 5 se kam (2–3) karne ya profile me `cooldown` badhane se aur smooth chalega. Gemini par ye error turant aata hai (5/min, 20/day) — isiliye default Groq hai |
+| `429` / quota error | Ye sirf cloud models par aata hai. Local Ollama (default) me koi quota hi nahi — 429 dikhe to matlab profile me abhi bhi cloud model laga hai |
 | `npm install` fail — `gl` package, 'No prebuilt binaries' / 'Could not find any Visual Studio' | **Node version galat hai.** Node 24/26 ke liye `gl` ke prebuilt binaries nahi hain, isliye wo compile karne ki koshish karta hai aur Visual Studio maangta hai. Fix: **Node 20 LTS** install karo (nvm-windows se `nvm install 20` + `nvm use 20`, ya nodejs.org se 20 LTS installer), phir `node_modules` aur `package-lock.json` delete karke `npm install` dobara chalao. Visual Studio wala raasta mat lo — heavy hai aur Node 26 par phir bhi risky hai |
-| Agents kuch kar hi nahi rahe | MindServer UI (localhost:8080) me error dekho; aksar wajah galat API key hoti hai |
+| Agents kuch kar hi nahi rahe | MindServer UI (localhost:8080) me error dekho; local mode me sabse common wajah: `ollama serve` chalu nahi hai, ya model pull nahi hua (`ollama list` se check karo) |
 | `patch-package` ERROR — mineflayer patch fail | Versions drift ka issue tha — repo me ab versions pin kiye hue hain aur `package-lock.json` committed hai. Fix: `git pull`, phir `rm -rf node_modules` karke `npm install` (lockfile ko mat delete karna — wahi exact versions laati hai). Saare 6 patches ✔ lagne chahiye |
 | Duniya reset karni hai | Server band karke `mc-server` ka `world` folder delete kar do; society ki memory reset karni ho to repo ka `bots/` folder delete karo |
 

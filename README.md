@@ -7,7 +7,7 @@ Built on the successful open-source project **[Mindcraft](https://github.com/kol
 - 🎭 **5 founder profiles** with distinct personalities & village roles — `profiles/society/`
 - 🌅 **A shared founding mission** seeded at spawn (`init_message` in `settings.js`)
 - 🧠 **Persistent memory** (`load_memory: true`) — the society continues where it left off
-- ⚔️ **Survival base profile**, Groq Llama 3.1 8B Instant as the default brain (free tier, 30 req/min, sub-second replies), Gemini & Ollama local models also supported
+- ⚔️ **Survival base profile**, local Qwen 2.5 3B via Ollama as the default brain (runs on your own GPU — no API key, no quota, no 429s), cloud models (Groq/Gemini) optional
 - 👀 **Spectator-first setup** — local Paper server, offline auth, watch live at `localhost:8080` too
 
 **👉 Full Windows setup, step by step: [SETUP-GUIDE.md](SETUP-GUIDE.md)**
